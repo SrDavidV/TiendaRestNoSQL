@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiendas La Genérica | Productos</title>
+  <!-- Css -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/barramenu.css">
+</head>
+<body>
+	<div class="contenido-video">
+		<video class="video" autoplay="autoplay" loop="loop" muted="muted">
+			<source src="imagenes/img.mp4" type="video/mp4">
+		</video>
+	</div>
+	<nav class= "navbar navbar-expand-lg navbar-light bg-light">
+      <a class="nav-main__menu" href="menuprincipal.html">&nbsp TIENDAS LA GENÉRICA&nbsp&nbsp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class= "navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">			
+			<li class="nav-item active">
+				<a class="nav-link" href="productos.html">
+					<i class="fa fa-shopping-cart"></i>&nbsp&nbsp Productos 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>			
+			<li class="nav-item active">
+				<a class="nav-link" href="clientes.html"> 
+					<i class="fa fa-address-book"></i>&nbsp&nbsp Clientes 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+		    <li class="nav-item active">
+				<a class="nav-link" href="ventas.html"> 
+					<i class="fas fa-dollar-sign"></i>&nbsp&nbsp Ventas 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+		    <li class="nav-item active">
+				<a class="nav-link" href="reportes.html">
+					<i class="fas fa-file-alt"></i>&nbsp&nbsp Reportes 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+		    <li class="nav-item active">
+				<a class="nav-link" href="consolidacion.html">
+					<i class="fas fa-poll"></i>&nbsp&nbsp Consolidación 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+		    <li class="nav-item active">
+				<a class="nav-link" href="index.html">
+					<i class="fas fa-sign-out-alt"></i>  &nbsp&nbsp Salir 
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+        </ul>
+      </div>
+    </nav>
+<form>
+	<div class="hold-transition login-page" >
+	<div class="login-box">
+	<div class="card card-outline card-primary">
+	<div class="card">
+		<div class="card-body ">
+			<p class="login-box-msg"> Módulo de Productos </p>
+		</div>
+	<form method="post" enctype="multipart/form-data" action="/uploadCSVFile">	  
+		<div class="card">
+		<div class="card-body ">
+		<p class="login-box-msg2"> ¡Gestiona los productos que se venden en La Genérica. Agrega aquí la lista de tus productos!</p>
+        <input type="file"  name=archivo placeholder="Archivo" accept=".csv" multiple required />
+		<div class="card-body ">
+			<div class="login-box-msg">
+				<input type="submit" name= "boton" value="Cargar" class="btn btn-primary btn-block"> 
+			</div> 
+		</div>
+		</form>
+		</form>	
+		<div style="color: red">${errorCargaArchivo}</div>
+		<div style="color: blue">${cargaArchivo}</div>	  
+ </div>
+ </div>
+</div>
+</div>
+</div>
+</div>
+</form>
+
+<!-- javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/adminlte.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+ function crearTabla(data) {
+      const todasFilas = data.split(/\r?\n|\r/);
+      let tabla = '<table>';
+      for (let fila = 0; fila < todasFilas.length; fila++) {
+        if (fila === 0) {
+          tabla += '<thead>';
+          tabla += '<tr>';
+        } else {
+          tabla += '<tr>';
+        }
+        const celdasFila = todasFilas[fila].split(',');
+        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++) {
+          if (fila === 0) {
+            tabla += '<th>';
+            tabla += celdasFila[rowCell];
+            tabla += '</th>';
+          } else {
+            tabla += '<td>';
+            if (rowCell === 3) {
+              tabla += '<img src="'+celdasFila[rowCell]+'">';
+            } else {
+              tabla += celdasFila[rowCell];
+            }
+            tabla += '</td>';
+          }
+        }
+        if (fila === 0) {
+          tabla += '</tr>';
+          tabla += '</thead>';
+          tabla += '<tbody>';
+        } else {
+          tabla += '</tr>';
+        }
+      } 
+      tabla += '</tbody>';
+      tabla += '</table>';
+      document.querySelector('#tablares').innerHTML = tabla;
+    }
+
+    function leerArchivo2(evt) {
+      let file = evt.target.files[0];
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        // Cuando el archivo se terminó de cargar
+        crearTabla(e.target.result)
+      };
+      // Leemos el contenido del archivo seleccionado
+      reader.readAsText(file);
+    }
+    document.querySelector('#archivo2')
+      .addEventListener('change', leerArchivo2, false);
+
+
+
+
+</script>
+
+</body>
+</html>
